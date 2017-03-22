@@ -25,6 +25,8 @@ namespace OrangeBricks.Web.Controllers.Property.Commands
                 UpdatedAt = DateTime.Now
             };
 
+            offer.BuyerUserId = command.BuyerUserId;
+
             if (property.Offers == null)
             {
                 property.Offers = new List<Offer>();

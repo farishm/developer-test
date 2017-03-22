@@ -17,6 +17,7 @@ namespace OrangeBricks.Web.Controllers.Property.Commands
         [Required]
         public int NumberOfBedrooms { get; set; }
 
+
         public string SellerUserId { get; set; }
     }
 }

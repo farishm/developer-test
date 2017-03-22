@@ -18,6 +18,7 @@ namespace OrangeBricks.Web.Controllers.Property.ViewModels
         public string Description { get; set; }
 
         [Required]
+        [DataType(DataType.Currency)]
         [Display(Name = "Number of bedrooms")]
         public int NumberOfBedrooms { get; set; }
 

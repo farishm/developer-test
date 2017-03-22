@@ -1,11 +1,11 @@
+using System;
 namespace OrangeBricks.Web.Controllers.Property.Commands
 {
-    public class MakeOfferCommand
+    public class BookViewingCommand
     {
         public int PropertyId { get; set; }
-
-        public int Offer { get; set; }
-
+        public DateTime ViewingDate { get; set; }
+        public DateTime ViewingTime { get; set; }
         public string BuyerUserId { get; set; }
     }
 }

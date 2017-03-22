@@ -1,0 +1,41 @@
+﻿@model OrangeBricks.Web.Controllers.Viewings.ViewModels.ViewingsOnPropertyViewModel
+
+@{
+    ViewBag.Title = "Viewings on Your Property";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>Here you can see the viewings that have been booked on your property.</p>
+
+<p><strong>Property type:</strong> @Model.PropertyType</p>
+<p><strong>Number of bedrooms:</strong> @Model.NumberOfBedrooms</p>
+<p><strong>Street name:</strong> @Model.StreetName</p>
+
+@if (Model.HasViewings)
+{
+    <p>There are @Model.Viewings.Count() viewings on this property...</p>
+    
+    foreach (var item in Model.Viewings)
+    {
+        <hr/>
+        <div>
+            <p><strong>Viewing Date: </strong>@Html.DisplayFor(modelItem => item.ViewingDate)</p>
+            <p><strong>Viewing Time: </strong> @Html.DisplayFor(modelItem => item.ViewingTime)</p>         
+            
+        </div>
+
+       
+    }
+}
+else
+{
+    <div class="alert alert-info" role="alert">
+        This property has no views yet!
+    </div>
+}
+
+<a href="@Url.Action("MyProperties", "Property")" class="btn btn-primary">
+    Back to Property List
+</a>

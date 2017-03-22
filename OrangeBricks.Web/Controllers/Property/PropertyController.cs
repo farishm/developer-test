@@ -7,6 +7,8 @@ using OrangeBricks.Web.Controllers.Property.Builders;
 using OrangeBricks.Web.Controllers.Property.Commands;
 using OrangeBricks.Web.Controllers.Property.ViewModels;
 using OrangeBricks.Web.Models;
+using OrangeBricks.Web.Controllers.Offers.Builders;
+using OrangeBricks.Web.Controllers.Offers.Commands;
 
 namespace OrangeBricks.Web.Controllers.Property
 {
@@ -42,6 +44,7 @@ namespace OrangeBricks.Web.Controllers.Property
 
         [OrangeBricksAuthorize(Roles = "Seller")]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(CreatePropertyCommand command)
         {
             var handler = new CreatePropertyCommandHandler(_context);
@@ -63,6 +66,7 @@ namespace OrangeBricks.Web.Controllers.Property
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [OrangeBricksAuthorize(Roles = "Seller")]
         public ActionResult ListForSale(ListPropertyCommand command)
         {
@@ -74,6 +78,14 @@ namespace OrangeBricks.Web.Controllers.Property
         }
 
         [OrangeBricksAuthorize(Roles = "Buyer")]
+        public ActionResult CheckORMakeOffer(int id)
+        {
+            var builder = new AcceptedOfferViewModelViewModelBuilder(_context);
+            var viewModel = builder.Build(id, User.Identity.GetUserId());
+            return View(viewModel);
+        }
+
+        [OrangeBricksAuthorize(Roles = "Buyer")]
         public ActionResult MakeOffer(int id)
         {
             var builder = new MakeOfferViewModelBuilder(_context);
@@ -82,10 +94,35 @@ namespace OrangeBricks.Web.Controllers.Property
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [OrangeBricksAuthorize(Roles = "Buyer")]
         public ActionResult MakeOffer(MakeOfferCommand command)
         {
             var handler = new MakeOfferCommandHandler(_context);
+
+            command.BuyerUserId = User.Identity.GetUserId();
+
+            handler.Handle(command);
+
+            return RedirectToAction("Index");
+        }
+
+        [OrangeBricksAuthorize(Roles = "Buyer")]
+        public ActionResult BookViewing(int id)
+        {
+            var builder = new BookViewingModelBuilder(_context);
+            var viewModel = builder.Build(id);
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [OrangeBricksAuthorize(Roles = "Buyer")]
+        public ActionResult BookViewing(BookViewingCommand command)
+        {
+            var handler = new BookViewingCommandHandler(_context);
+
+            command.BuyerUserId = User.Identity.GetUserId();
 
             handler.Handle(command);
 

@@ -1,0 +1,28 @@
+﻿@model OrangeBricks.Web.Controllers.Offers.ViewModels.AcceptedOfferViewModel
+
+@{
+    ViewBag.Title = "Make Offer or Check for Accepted Offer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p><strong>Property type:</strong> @Model.PropertyType</p>
+<p><strong>Number of bedrooms:</strong> @Model.NumberOfBedrooms</p>
+<p><strong>Street name:</strong> @Model.StreetName</p>
+
+@if (Model.HasAcceptedOffer)
+{
+    <p>Good news, The offer you made for the above property for the amount @Model.Amount has been accepted by the Seller...</p>
+
+    <a href="@Url.Action("Index", "Property")" class="btn btn-primary">
+        Back to Property List
+    </a>
+}
+else
+{
+    <p>There is no accepted offer by the Seller for the above property yet</p>
+    <a href="@Url.Action("MakeOffer", "Property", new {id = Model.PropertyId})" class="btn btn-primary">
+        Make or Check Offer
+    </a>
+}

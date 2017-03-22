@@ -24,7 +24,8 @@ namespace OrangeBricks.Web.Controllers.Offers
             return View(viewModel);
         }
 
-        [HttpPost]        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Accept(AcceptOfferCommand command)
         {
             var handler = new AcceptOfferCommandHandler(_context);
@@ -35,6 +36,7 @@ namespace OrangeBricks.Web.Controllers.Offers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Reject(RejectOfferCommand command)
         {
             var handler = new RejectOfferCommandHandler(_context);
