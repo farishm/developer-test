@@ -32,7 +32,7 @@ namespace OrangeBricks.Web.Controllers.Property.Builders
                     .ToList()
                     .Select(MapViewModel)
                     .ToList(),
-                Search = query.Search,
+                Search = query.Search
             };
         }
 
