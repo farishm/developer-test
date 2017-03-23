@@ -32,7 +32,7 @@ namespace OrangeBricks.Web.Controllers.Property.Builders
                     .ToList()
                     .Select(MapViewModel)
                     .ToList(),
-                Search = query.Search
+                Search = query.Search,
             };
         }
 
@@ -44,7 +44,9 @@ namespace OrangeBricks.Web.Controllers.Property.Builders
                 StreetName = property.StreetName,
                 Description = property.Description,
                 NumberOfBedrooms = property.NumberOfBedrooms,
-                PropertyType = property.PropertyType
+                PropertyType = property.PropertyType,
+                PropertyOffers = property.Offers,
+                PropertyViewings=property.Viewings
             };
         }
     }

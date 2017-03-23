@@ -5,6 +5,7 @@ using NSubstitute;
 using NUnit.Framework;
 using OrangeBricks.Web.Controllers.Property.Builders;
 using OrangeBricks.Web.Models;
+using System;
 
 namespace OrangeBricks.Web.Tests.Controllers.Property.Builders
 {
@@ -86,6 +87,97 @@ namespace OrangeBricks.Web.Tests.Controllers.Property.Builders
             // Assert
             Assert.That(viewModel.Properties.Count, Is.EqualTo(1));
             Assert.That(viewModel.Properties.All(p => p.Description.Contains("Town")));
+        }
+
+         [Test]
+        public void BuildShouldReturnAcceptedOfferforProperties()
+        {
+            // Arrange
+            var builder = new PropertiesViewModelBuilder(_context);
+
+            var properties = new List<OrangeBricks.Web.Models.Property>{
+                new OrangeBricks.Web.Models.Property{
+                    StreetName = "Smith Street",
+                    Description = "",
+                    IsListedForSale = true,
+
+                     Offers = new List<Offer>
+                     {
+                        new Offer
+                            {
+                                 BuyerUserId = "45667",
+                                 Status = OfferStatus.Accepted
+                            }
+                     }
+                }
+            };
+
+            var mockSet = Substitute.For<IDbSet<OrangeBricks.Web.Models.Property>>()
+                .Initialize(properties.AsQueryable());
+
+            _context.Properties.Returns(mockSet);
+
+            var query = new PropertiesQuery
+            {
+                Search = "Smith Street"
+            };
+
+            // Act
+            var viewModel = builder.Build(query);
+
+            var prpsWithAcceptedOffers = viewModel.Properties.Select(p => p.PropertyOffers);          
+
+            // Assert
+            Assert.That(prpsWithAcceptedOffers.Count, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void BuildShouldReturnVirewingsforProperties()
+        {
+            // Arrange
+            var builder = new PropertiesViewModelBuilder(_context);
+
+            var properties = new List<OrangeBricks.Web.Models.Property>{
+                new OrangeBricks.Web.Models.Property{
+                    StreetName = "Smith Street",
+                    Description = "",
+                    IsListedForSale = true,
+
+                     Viewings = new List<Viewing>
+                     {
+                        new Viewing
+                            {
+                                 BuyerUserId = "45667",
+                                 ViewingDate=DateTime.Now,
+                                 ViewingTime=DateTime.Now
+                            },
+                             new Viewing
+                            {
+                                 BuyerUserId = "78889",
+                                 ViewingDate=DateTime.Now,
+                                 ViewingTime=DateTime.Now
+                            }
+                     }
+                }
+            };
+
+            var mockSet = Substitute.For<IDbSet<OrangeBricks.Web.Models.Property>>()
+                .Initialize(properties.AsQueryable());
+
+            _context.Properties.Returns(mockSet);
+
+            var query = new PropertiesQuery
+            {
+                Search = "Smith Street"
+            };
+
+            // Act
+            var viewModel = builder.Build(query);
+
+            var viewings = viewModel.Properties[0].PropertyViewings;            
+
+            // Assert
+            Assert.That(viewings.Count, Is.EqualTo(2));
         }
     }
 }
